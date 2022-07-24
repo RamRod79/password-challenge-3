@@ -1,91 +1,65 @@
-// Assignment code here
+let characterLength = 8;
+let chioceArr = [];
 
-
-// Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
-
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-
-}
-
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
-
-
-
-// Assignment code here
 let specialCharacters = ['@', '%', '+', '\\', '/', "'", '!', '#', '$', '^', '?', ':', ',', ')', '(', '}', '{', ']', '[', '~', '-', '_', '.',]
 let numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 let lowerCasedCharacters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 let upperCasedCharacters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-// Get references to the #generate element
+// 1. Prompt user for the password criteria
+// 2. Validate the input
+// 3. Generate password based on criteria
+// 4. Display password to the page
 
+// Assignment code here
 let generateBtn = document.querySelector("#generate");
-
-// Write password to the #password input
-
-function writePassword(arr) {
-  let randomIndex = Math.floor(Math.random() * arr.length);
-  let randomCharacter= arr[randomIndex];
-  let password = generatePassword();
-  let passwordText = document.querySelector("#password");
-
-   console.log(randomCharacter);
-   return randomCharacter;
-
-  passwordText.value = password;
-}
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-// iterate through all password options, asking is user wants range of password, special characters, numbers, lower & upper case letters 
+// Write password to the #password input
+function writePassword() {
+  let validPrompts = getPrompts();
+        let passwordText = document.querySelector("#password");
 
-let numOfCharacters = parsInt(prompt("How many characters would you like your password to contain?"));
-let confirmSpecialCharacters = confirm("Click OKto confirm including special characters")
-let confirmNumbers = confirm("Click OKto confirm including numbers")
-let confirmLowerCase = confirm("Click OKto confirm including lower case letters")
-let confirmUpperCase = confirm("Click OKto confirm including UPPER case letters")
+  if (validPrompts) {
+      let validpassword = generatePassword();
+      passwordText.value = validpassword;
+  } else {
+    passwordText.value = "";
+  }
+}
 
-let finalPassword = [];
+function generatePassword() {
+  let password = "";
+  for(let i = 0; i < characterLength; i++) {
+      let randomIndex = Math.floor(Math.random() * chioceArr.length);
+      password = password + chioceArr[randomIndex];
+  } 
+  return password;
+}
 
-while (finalPassword.length < numOfCharacters) { }
-// //***Make sure User has at least one from each 
-    
-for (let i = 0, finalPassword.length < numOfCharacters; i++) {
-//     if (wantsRice && finalBurrito.length < numOfIngredients) {
-//         let randomRice = getRandomIngredient(rice);
-//         finalBurrito.push(randomRice);
-//     }
-// }
+function getPrompts () {
+  chioceArr = [];
+  
+  characterLength = parseInt(prompt("How many character would you like your passsword to be?. Your password must be a minimum of 8 characters and a maximum of 128"));
 
-// if (wantsRice) {
-//     let randomrice = getRandomIngredient(rice);
-//     finalBurrito.push(randomRice);
-// }
+  if (isNaN(characterLength) || characterLength < 8 || characterLength > 128){
+    alert("Please enter a numerical value that must be a minimum of 8 characters and a maximum of 128")
+    return false;
+  }
 
-// if (wantsProtein) {
-//     let randomProtein = getRandomIngredient(protein);
-//     finalBurrito.push(randomProtein);
-// }
-
-// if (wantsSalsa) {
-//     let randomSalsa = getRandomIngredient(salsa);
-//     finalBurrito.push(randomSalsa);
-// }
-
-// if (wantsSalsa) {
-//     let randomSalsa = getRandomIngredient(salsa);
-//     finalBurrito.push(randomSalsa);
-// }
-
-
-// // get random option from each list of wanted ingredients
-
-// // let the user know thei burrit is 
+  if (confirm("Click OK to confirm including special characters")) {
+    chioceArr = chioceArr.concat(specialCharacters);
+  }
+  if (confirm("Click OK to confirm including numbers")) {
+    chioceArr = chioceArr.concat(numericCharacters);
+  }
+  if (confirm("Click OK to confirm including lowercase letters")) {
+    chioceArr = chioceArr.concat(lowerCasedCharacters);
+  }
+  if (confirm("Click OK to confirm including uppercase letters")) {
+    chioceArr = chioceArr.concat(upperCasedCharacters);
+  }
+  return true;
+}
